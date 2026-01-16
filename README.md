@@ -1,7 +1,8 @@
 
 # 🏥 MediCare - Doctor Appointment System
 
-> A full-stack web application for booking doctor appointments, built with Django backend and vanilla JavaScript frontend.
+> A full-stack web application that allows patients to book appointments with doctors online.
+The system provides separate dashboards for Admin, Doctors, and Patients and manages authentication, scheduling, and profile management efficiently.
 
 ![Build](https://img.shields.io/github/actions/workflow/status/FlamingSlayer/DoctorAppointment/django.yml?style=flat-square)  
 ![Python Version](https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square)  
@@ -39,24 +40,30 @@
 ## 🏗️ System Architecture
 
 ```
-Frontend (HTML/CSS/JS) <---- REST API (JWT) ----> Django Backend (DRF, Models)
-│                                       │
-│                                       ▼
-└─────────────── Database (SQLite/PostgreSQL) ──────────────┘
+Frontend (HTML/CSS/JS)
+        │
+        ▼
+REST API (JWT Auth)
+        │
+        ▼
+Django Backend (DRF)
+        │
+        ▼
+MySQL Database
+
 ```
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer           | Technology                          | Purpose                           |
+| Layer           | Technology                         | Purpose                          |
 |-----------------|------------------------------------|----------------------------------|
-| **Frontend**    | HTML5, CSS3, Vanilla JavaScript    | User interface and interactions  |
-| **Backend**     | Django 4.x, Django REST Framework  | API development, business logic  |
-| **Database**    | SQLite (Dev), PostgreSQL (Prod)   | Data persistence and storage     |
+| **Frontend**    | HTML5, CSS3, JavaScript            | User interface and interactions  |
+| **Backend**     | Django , Django REST Framework     | API development                  |
+| **Database**    | MySQL                              | Data persistence and storage     |
 | **Authentication** | JWT (DRF Simple JWT)            | Secure user authentication       |
-| **Styling**     | Custom CSS, Font Awesome Icons     | Modern UI components             |
-| **Deployment**  | Render/Railway, Gunicorn, Nginx   | Production hosting               |
+| **Styling**     | Bootstrap , Font Awesome Icons     | Modern UI components             |
 
 ---
 
@@ -147,19 +154,19 @@ python manage.py runserver
 ## 📚 API Documentation
 
 ### Authentication Endpoints
-| Method | Endpoint               | Description                  |
-|--------|-----------------------|------------------------------|
+| Method | Endpoint               | Description                    |
+|--------|------------------------|--------------------------------|
 | POST   | /api/auth/login/       | User login, returns JWT tokens |
-| POST   | /api/auth/refresh/     | Refresh access token         |
-| POST   | /api/users/            | Register new user            |
+| POST   | /api/auth/refresh/     | Refresh access token           |
+| POST   | /api/users/            | Register new user              |
 
 ### Appointment Endpoints
 | Method | Endpoint                     | Description        | Access        |
-|--------|------------------------------|------------------|---------------|
-| GET    | /api/appointments/           | List appointments | All users     |
-| POST   | /api/appointments/           | Create appointment| Patients      |
-| PATCH  | /api/appointments/{id}/      | Update status     | Doctors       |
-| DELETE | /api/appointments/{id}/      | Cancel appointment| Patient/Doctor|
+|--------|------------------------------|--------------------|---------------|
+| GET    | /api/appointments/           | List appointments  | All users     |
+| POST   | /api/appointments/           | Create appointment | Patients      |
+| PATCH  | /api/appointments/{id}/      | Update status      | Doctors       |
+| DELETE | /api/appointments/{id}/      | Cancel appointment | Patient/Doctor|
 
 ### User Management
 | Method | Endpoint                 | Description            | Access         |
@@ -239,19 +246,7 @@ git commit -m 'Add AmazingFeature'
 git push origin feature/AmazingFeature
 ```
 5. Open a Pull Request
-
-**Development Guidelines**
-- Follow PEP 8 for Python code
-- Write meaningful commit messages
-- Add comments for complex logic
-- Update documentation as needed
-
----
-
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+6. 
 
 ## 🙏 Acknowledgments
 - Django team for the excellent framework
@@ -263,9 +258,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 - Report Issues: [GitHub Issues](https://github.com/FlamingSlayer/DoctorAppointment/issues)  
 - Discussion: [GitHub Discussions](https://github.com/FlamingSlayer/DoctorAppointment/discussions)  
-- Contact: Open an issue for direct contact
+- Contact: [Telegram Bot](https://t.me/FlamingSlayer_Bot)
 
 ---
 
-Built with ❤️ by **FlamingSlayer**  
+Built with ❤️ by **VidhyanJha**  
 If you find this project helpful, please give it a ⭐ on GitHub!

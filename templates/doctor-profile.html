@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile - MediCare</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. CRITICAL COLOR VARIABLES (Matches Find Doctors) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338ca;
+            --secondary: #EC4899;
+            --background: #f3f4f6;
+            --surface: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            /* Enhanced Color Palette (from Find Doctors) */
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --info: #3b82f6;
+            --info-light: #dbeafe;
+            --star: #fbbf24;
+            --experience: #8b5cf6;
+            --experience-light: #ede9fe;
+            --fee: #059669;
+            --fee-light: #d1fae5;
+            --rating: #f59e0b;
+            --rating-light: #fef3c7;
+        }
+
+        [data-theme="dark"] {
+            --background: #111827;
+            --surface: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --border: #374151;
+            --success-light: rgba(16, 185, 129, 0.2);
+            --warning-light: rgba(245, 158, 11, 0.2);
+            --danger-light: rgba(239, 68, 68, 0.2);
+            --info-light: rgba(59, 130, 246, 0.2);
+            --experience-light: rgba(139, 92, 246, 0.2);
+            --fee-light: rgba(5, 150, 105, 0.2);
+            --rating-light: rgba(245, 158, 11, 0.2);
+        }
+
+        [data-theme="dark"] ::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        body { background-color: var(--background); color: var(--text-primary); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- HEADER (Matches Find Doctors) --- */
+        .header { 
+            background: var(--surface); 
+            padding: 1rem 0; 
+            box-shadow: var(--shadow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .header-inner { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        /* Logo with Gradient Colors (Matches Find Doctors) */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            text-decoration: none; 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover { transform: scale(1.05); }
+        .logo i { 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+        }
+        
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+
+        /* --- BUTTONS (Matches Find Doctors) --- */
+        .btn { 
+            padding: 0.5rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            cursor: pointer; 
+            border: none; 
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        .btn-outline { 
+            border: 1px solid var(--primary); 
+            color: var(--primary); 
+            background: transparent; 
+        }
+        .btn-outline:hover { 
+            background: var(--primary); 
+            color: white; 
+            transform: translateY(-1px); 
+        }
+        .btn-primary { 
+            background: var(--primary); 
+            color: white; 
+        }
+        .btn-primary:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-1px); 
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); 
+        }
+        .btn-danger { 
+            background: var(--danger-light); 
+            color: var(--danger); 
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-danger:hover { 
+            background: var(--danger); 
+            color: white; 
+            transform: translateY(-1px);
+            border-color: var(--danger);
+        }
+        .btn-secondary { 
+            background: var(--info-light); 
+            color: var(--info); 
+            border: 1px solid var(--border); 
+        }
+        .btn-secondary:hover { 
+            background: var(--info); 
+            color: white; 
+        }
+        .btn-block { 
+            width: 100%; 
+            display: block; 
+            text-align: center; 
+        }
+        .btn-small { 
+            padding: 0.4rem 1rem; 
+            font-size: 0.85rem; 
+        }
+
+        /* Theme Toggle (Matches Find Doctors) */
+        .theme-toggle { 
+            background: var(--surface); 
+            color: var(--text-primary); 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            border: none; 
+            padding: 0.5rem; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover { 
+            background: var(--primary); 
+            color: white; 
+            transform: rotate(15deg);
+        }
+
+        /* --- PAGE CONTENT --- */
+        .main-content { padding: 40px 0; }
+
+        /* --- NAVIGATION TABS (Updated Style) --- */
+        .nav-tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 30px; 
+            padding-bottom: 15px; 
+            border-bottom: 2px solid var(--border);
+        }
+        .nav-link { 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            color: var(--text-secondary); 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .nav-link:hover { 
+            background: var(--background); 
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+        .nav-link.active { 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* --- PROFILE GRID --- */
+        .profile-grid { 
+            display: grid; 
+            grid-template-columns: 350px 1fr; 
+            gap: 30px; 
+        }
+
+        @media (max-width: 900px) {
+            .profile-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- IDENTITY CARD (Matches Doctor Card Style) --- */
+        .identity-card { 
+            background: var(--surface); 
+            border-radius: 16px; 
+            padding: 30px; 
+            text-align: center; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+        .identity-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .avatar { 
+            width: 100px; 
+            height: 100px; 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2.5rem; 
+            font-weight: 700; 
+            margin: 0 auto 20px;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .user-name { 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            margin-bottom: 5px; 
+            color: var(--text-primary); 
+        }
+        .user-email { 
+            color: var(--text-secondary); 
+            font-size: 0.9rem; 
+            margin-bottom: 20px; 
+            padding: 8px 12px;
+            background: var(--background);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        /* Role Badge (Matches Badge Style from Find Doctors) */
+        .role-badge { 
+            display: inline-block; 
+            padding: 8px 16px; 
+            background: linear-gradient(135deg, var(--info-light) 0%, var(--experience-light) 100%);
+            color: var(--info); 
+            border-radius: 20px; 
+            font-size: 0.9rem; 
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- DETAILS CARD (Matches Modal Style from Find Doctors) --- */
+        .details-card { 
+            background: var(--surface); 
+            border-radius: 16px; 
+            padding: 30px; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        .details-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Section Header (Matches Modal Section Style) */
+        .section-header { 
+            margin-bottom: 25px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid var(--border); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+        }
+        .section-header h2 { 
+            font-size: 1.25rem; 
+            font-weight: 600; 
+            color: var(--primary); 
+        }
+        
+        /* --- FORM STYLES (Matches Booking Modal) --- */
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+        .full-width { grid-column: 1 / -1; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 0.5rem; 
+            font-size: 0.9rem; 
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-input { 
+            width: 100%; 
+            padding: 0.75rem; 
+            border: 2px solid var(--border); 
+            border-radius: 6px; 
+            background: var(--background); 
+            color: var(--text-primary); 
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .form-input:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        .form-input:disabled { 
+            opacity: 0.6; 
+            cursor: not-allowed;
+            background: var(--background);
+        }
+        
+        textarea.form-input { 
+            min-height: 100px; 
+            resize: vertical; 
+        }
+        
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+
+        /* Special Styling for Doctor-Specific Fields */
+        .form-group:nth-child(3) .form-input:focus { /* Age */
+            border-color: var(--secondary);
+        }
+        
+        .form-group:nth-child(4) .form-input:focus { /* Phone */
+            border-color: var(--success);
+        }
+        
+        .form-group:nth-child(5) .form-input:focus { /* Specialization */
+            border-color: var(--experience);
+        }
+        
+        .form-group:nth-child(6) .form-input:focus { /* Experience */
+            border-color: var(--warning);
+        }
+        
+        .form-group:nth-child(7) .form-input:focus { /* Consultation Fee */
+            border-color: var(--fee);
+        }
+
+        /* --- ALERT MESSAGES (Matches Notification Style) --- */
+        .alert { 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            display: none; 
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert-success { 
+            background: var(--success-light); 
+            color: var(--success); 
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .alert-error { 
+            background: var(--danger-light); 
+            color: var(--danger); 
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        /* --- SAVE BUTTON CONTAINER --- */
+        .save-container {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            text-align: right;
+        }
+
+        /* --- DOCTOR INFO HINT --- */
+        .doctor-info-hint {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .nav-tabs { flex-direction: column; }
+            .nav-link { text-align: center; justify-content: center; }
+            .header-controls { flex-wrap: wrap; justify-content: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo"><i class="fas fa-heart-pulse"></i> MediCare</a>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button onclick="logout()" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content">
+        
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <a href="doctor-dashboard.html" class="nav-link">
+                <i class="fas fa-columns"></i> Dashboard
+            </a>
+            <a href="doctor-profile.html" class="nav-link active">
+                <i class="fas fa-user-md"></i> Professional Profile
+            </a>
+        </div>
+
+        <!-- Profile Grid -->
+        <div class="profile-grid">
+            <!-- Left: Identity Card -->
+            <div class="identity-card">
+                <div class="avatar" id="avatar-initials">?</div>
+                <h1 class="user-name" id="display-name">Loading...</h1>
+                <p class="user-email" id="display-email">...</p>
+                <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <span class="role-badge">
+                        <i class="fas fa-user-md"></i> Doctor Account
+                    </span>
+                </div>
+                <div class="doctor-info-hint">
+                    <p><i class="fas fa-info-circle" style="color: var(--info);"></i> Your professional profile helps patients find and trust you. Keep it updated for better visibility.</p>
+                </div>
+            </div>
+
+            <!-- Right: Details Card -->
+            <div class="details-card">
+                <div class="section-header">
+                    <i class="fas fa-user-md fa-lg" style="color: var(--primary);"></i>
+                    <h2>Professional Profile</h2>
+                </div>
+
+                <!-- Status Message -->
+                <div id="status-msg" class="alert"></div>
+
+                <!-- Form -->
+                <form id="profile-form">
+                    <div class="form-grid">
+                        <!-- Read-only Name Fields -->
+                        <div class="form-group">
+                            <label><i class="fas fa-user" style="color: var(--primary);"></i> First Name</label>
+                            <input type="text" id="fname" class="form-input" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-user" style="color: var(--primary);"></i> Last Name</label>
+                            <input type="text" id="lname" class="form-input" disabled>
+                        </div>
+
+                        <!-- Doctor Specific Fields -->
+                        <div class="form-group">
+                            <label><i class="fas fa-birthday-cake" style="color: var(--secondary);"></i> Age</label>
+                            <input type="number" id="age" class="form-input" placeholder="Years" min="25" max="80">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone" style="color: var(--success);"></i> Phone Number</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="+91 98765 43210">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-stethoscope" style="color: var(--experience);"></i> Specialization</label>
+                            <input type="text" id="specialization" class="form-input" placeholder="e.g. Cardiologist, Dermatologist, Pediatrician">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-briefcase-medical" style="color: var(--warning);"></i> Experience (Years)</label>
+                            <input type="number" id="experience" class="form-input" placeholder="0" min="0" max="50">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-rupee-sign" style="color: var(--fee);"></i> Consultation Fee (₹)</label>
+                            <input type="number" id="consultation_fee" class="form-input" placeholder="0.00">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-map-marker-alt" style="color: var(--info);"></i> Clinic Address</label>
+                            <textarea id="address" class="form-input" placeholder="Enter full clinic address with landmarks..." rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label><i class="fas fa-file-medical-alt" style="color: var(--primary);"></i> Professional Bio</label>
+                            <textarea id="bio" class="form-input" placeholder="Brief professional description, qualifications, achievements, and approach to patient care..." rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="save-container">
+                        <button type="submit" id="save-btn" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- API ENDPOINT FOR DOCTORS ---
+        const API_PROFILE = 'http://127.0.0.1:8000/api/users/profile/';
+        
+        // --- 1. THEME LOGIC (Matches Find Doctors) ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+
+        // --- 2. LOAD DATA ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+            const userStr = localStorage.getItem('user');
+
+            if (!token || !userStr) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            
+            // Populate Identity Card with initials
+            const initials = (user.first_name[0] || 'D') + (user.last_name[0] || 'R');
+            document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+            document.getElementById('display-name').textContent = `Dr. ${user.first_name} ${user.last_name}`;
+            document.getElementById('display-email').textContent = user.email;
+            
+            // Populate Read-Only Fields
+            document.getElementById('fname').value = user.first_name;
+            document.getElementById('lname').value = user.last_name;
+
+            // Fetch Full Doctor Profile Data
+            try {
+                const res = await fetch(API_PROFILE, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Fill Fields if data exists
+                    if(data.age) document.getElementById('age').value = data.age;
+                    if(data.phone) document.getElementById('phone').value = data.phone;
+                    if(data.specialization) document.getElementById('specialization').value = data.specialization;
+                    if(data.experience) document.getElementById('experience').value = data.experience;
+                    if(data.consultation_fee) document.getElementById('consultation_fee').value = data.consultation_fee;
+                    if(data.address) document.getElementById('address').value = data.address;
+                    if(data.bio) document.getElementById('bio').value = data.bio;
+                    
+                } else if (res.status === 404) {
+                    // Profile doesn't exist yet - that's okay
+                    console.log("No existing doctor profile found. Creating new one on save.");
+                    showMessage('Please complete your professional profile to appear in doctor listings.', 'info');
+                } else {
+                    console.error("Failed to load profile data");
+                    showMessage('Error loading profile. Please refresh.', 'error');
+                }
+            } catch (err) { 
+                console.error("Network error:", err);
+                showMessage('Network error. Please check connection.', 'error');
+            }
+        });
+
+        // --- 3. HELPER FUNCTION FOR MESSAGES ---
+        function showMessage(text, type = 'success') {
+            const msgBox = document.getElementById('status-msg');
+            msgBox.textContent = text;
+            msgBox.className = `alert alert-${type}`;
+            msgBox.style.display = 'flex';
+            
+            // Set icon based on message type
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            msgBox.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
+            
+            setTimeout(() => {
+                if (type !== 'info') {
+                    msgBox.style.display = 'none';
+                }
+            }, type === 'error' ? 5000 : 3000);
+        }
+
+        // --- 4. SAVE DATA ---
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('save-btn');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            // Gather Doctor Specific Data
+            const payload = {
+                age: document.getElementById('age').value || null,
+                phone: document.getElementById('phone').value || "",
+                specialization: document.getElementById('specialization').value || "",
+                experience: document.getElementById('experience').value || 0,
+                consultation_fee: document.getElementById('consultation_fee').value || 0,
+                address: document.getElementById('address').value || "",
+                bio: document.getElementById('bio').value || ""
+            };
+
+            const token = localStorage.getItem('access_token');
+
+            try {
+                const res = await fetch(API_PROFILE, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showMessage('Professional profile updated successfully!', 'success');
+                    // Add visual feedback
+                    btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                    }, 1500);
+                    
+                    // Update user in localStorage if needed
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    if (user) {
+                        user.specialization = payload.specialization;
+                        localStorage.setItem('user', JSON.stringify(user));
+                    }
+                } else {
+                    const errorData = await res.json(); 
+                    console.error("Server Error:", errorData);
+                    
+                    // Show user-friendly error
+                    let errorMsg = 'Update failed. ';
+                    if (errorData.detail) {
+                        errorMsg += errorData.detail;
+                    } else if (errorData.non_field_errors) {
+                        errorMsg += errorData.non_field_errors[0];
+                    } else if (errorData.specialization) {
+                        errorMsg += 'Specialization: ' + errorData.specialization[0];
+                    } else {
+                        errorMsg += 'Please check your data.';
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            } catch (err) {
+                console.error("Network Error:", err);
+                showMessage('Network error. Please check connection.', 'error');
+            } finally {
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                }, 1500);
+            }
+        });
+
+        // --- 5. LOGOUT FUNCTION ---
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // --- 6. KEYBOARD SHORTCUTS (Matches Find Doctors) ---
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                document.getElementById('save-btn').click();
+            }
+            // Escape to clear messages
+            if (e.key === 'Escape') {
+                document.getElementById('status-msg').style.display = 'none';
+            }
+        });
+
+        // --- 7. INPUT VALIDATION ---
+        document.getElementById('consultation_fee').addEventListener('input', function(e) {
+            const value = parseInt(e.target.value);
+            if (value < 0) {
+                e.target.value = 0;
+            }
+        });
+
+        document.getElementById('experience').addEventListener('input', function(e) {
+            const value = parseInt(e.target.value);
+            if (value < 0) {
+                e.target.value = 0;
+            } else if (value > 50) {
+                e.target.value = 50;
+            }
+        });
+
+        document.getElementById('age').addEventListener('input', function(e) {
+            const value = parseInt(e.target.value);
+            if (value < 25) {
+                e.target.value = 25;
+            } else if (value > 80) {
+                e.target.value = 80;
+            }
+        });
+    </script>
+</body>
+</html>

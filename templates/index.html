@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MediCare - Book appointments with top doctors easily. Your health, our priority.">
+  <title>MediCare - Doctor Appointment Booking System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    @import url('/static/css/index.css');
+
+    /* --- FIXED CSS FOR USER MENU --- */
+    .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    #user-nav {
+        display: none; /* Hidden by default */
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-greeting {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+
+    .btn-logout {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 1.1rem;
+        padding: 5px;
+        transition: color 0.3s;
+    }
+    
+    .btn-logout:hover {
+        color: var(--error);
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="main-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-heart-pulse"></i>
+          </div>
+          <span class="logo-text">MediCare</span>
+        </a>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="nav-links" id="navLinks">
+          <a href="#" class="nav-link active">Home</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#contact" class="nav-link">Contact</a>
+          <a href="#policies" class="nav-link">Policies</a>
+        </nav>
+        
+        <div class="header-controls">
+          <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+          </button>
+          
+          <div id="guest-nav" style="display: flex; gap: 10px;">
+            <a href="login.html" class="btn btn-outline">Login</a>
+            <a href="register.html" class="btn btn-primary">Sign Up</a>
+          </div>
+
+          <div id="user-nav">
+            <span class="user-greeting">Hi, <span id="user-name-display">User</span></span>
+            <a href="#" id="dashboard-link" class="btn btn-primary">Dashboard</a>
+            <button onclick="handleLogout()" class="btn-logout" title="Logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content animate-fade-in">
+          <h1 class="hero-title">
+            Healthcare That <span class="highlight">Adapts</span> To You
+          </h1>
+          <p class="hero-description">
+            Experience seamless doctor appointments, virtual consultations, and personalized healthcare - all in one modern platform designed for your comfort and convenience.
+          </p>
+          <div class="hero-actions">
+            <a href="register.html" class="btn btn-hero" id="hero-cta-btn">
+              <i class="fas fa-calendar-check"></i>
+              Book Appointment Now
+            </a>
+            
+            <a href="login.html" class="btn btn-outline btn-lg" id="hero-login-btn">
+              <i class="fas fa-user-md"></i>
+              Doctor Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header animate-fade-in">
+          <h2 class="section-title">Everything You Need For Better Health</h2>
+          <p class="section-description">
+            Comprehensive healthcare solutions designed around your needs and schedule.
+          </p>
+        </div>
+        
+        <div class="features-grid">
+          <div class="feature-card animate-fade-in" style="animation-delay: 100ms">
+            <div class="feature-icon"><i class="fas fa-video"></i></div>
+            <h3 class="feature-title">Virtual Consultations</h3>
+            <p class="feature-description">Connect with doctors from home via secure HD video calls. Perfect for follow-ups.</p>
+          </div>
+          
+          <div class="feature-card animate-fade-in" style="animation-delay: 200ms">
+            <div class="feature-icon"><i class="fas fa-clock"></i></div>
+            <h3 class="feature-title">24/7 Availability</h3>
+            <p class="feature-description">Book appointments anytime. Our platform is available round the clock.</p>
+          </div>
+          
+          <div class="feature-card animate-fade-in" style="animation-delay: 300ms">
+            <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3 class="feature-title">Secure & Private</h3>
+            <p class="feature-description">HIPAA compliant with end-to-end encryption. Your health data remains confidential.</p>
+          </div>
+          
+          <div class="feature-card animate-fade-in" style="animation-delay: 400ms">
+            <div class="feature-icon"><i class="fas fa-prescription"></i></div>
+            <h3 class="feature-title">Digital Prescriptions</h3>
+            <p class="feature-description">Receive e-prescriptions instantly. Share with pharmacies electronically.</p>
+          </div>
+          
+          <div class="feature-card animate-fade-in" style="animation-delay: 500ms">
+            <div class="feature-icon"><i class="fas fa-file-medical"></i></div>
+            <h3 class="feature-title">Health Records</h3>
+            <p class="feature-description">Centralized digital health records. Access your complete medical history anytime.</p>
+          </div>
+          
+          <div class="feature-card animate-fade-in" style="animation-delay: 600ms">
+            <div class="feature-icon"><i class="fas fa-bell"></i></div>
+            <h3 class="feature-title">Smart Reminders</h3>
+            <p class="feature-description">Never miss an appointment. Get automated reminders via SMS and email.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-header animate-fade-in">
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-description">
+            Have questions about our services or need technical support? Our team is here to help you 24/7.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info animate-fade-in" style="animation-delay: 100ms">
+            <div class="info-card">
+              <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="info-content">
+                <h3>Visit Us</h3>
+                <p>Bhagwa Chowk <br>Kondhwa BK, Pune 411048</p>
+              </div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+              <div class="info-content">
+                <h3>Call Us</h3>
+                <p>Support: +919373636822<br>Emergency: 911</p>
+              </div>
+            </div>
+            
+            <div class="info-card">
+              <div class="info-icon"><i class="fas fa-envelope"></i></div>
+              <div class="info-content">
+                <h3>Email Us</h3>
+                <p>support@medicare.com<br>info@medicare.com</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-form-wrapper animate-fade-in" style="animation-delay: 200ms">
+            <form class="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" class="form-input" placeholder="Omkar" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" class="form-input" placeholder="omkar@example.com" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" class="form-input">
+                  <option value="">Select a topic</option>
+                  <option value="appointment">Appointment Issue</option>
+                  <option value="technical">Technical Support</option>
+                  <option value="general">General Inquiry</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" class="form-input" rows="4" placeholder="How can we help you?" required></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-paper-plane"></i> Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div id="policy-pages" class="hidden">
+    <section id="privacy-policy" class="policy-container hidden">
+      <div class="policy-header">
+        <h1 class="policy-title">Privacy Policy</h1>
+        <div class="policy-meta">Last Updated: December 15, 2024</div>
+      </div>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h2>1. Information We Collect</h2>
+          <p>We collect information you provide directly to us, such as when you create an account, book an appointment, or contact us for support.</p>
+        </div>
+        <div class="policy-section">
+          <h2>2. How We Use Your Information</h2>
+          <p>We use the information we collect to provide and improve our healthcare services.</p>
+        </div>
+        <div class="policy-section">
+          <h2>3. Data Security</h2>
+          <p>We implement industry-standard security measures to protect your personal and health information.</p>
+        </div>
+        <button onclick="hidePolicyPages()" class="btn btn-primary back-btn">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </button>
+      </div>
+    </section>
+
+    <section id="terms-conditions" class="policy-container hidden">
+      <div class="policy-header">
+        <h1 class="policy-title">Terms & Conditions</h1>
+        <div class="policy-meta">Effective: December 15, 2024</div>
+      </div>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h2>1. Acceptance of Terms</h2>
+          <p>By accessing and using MediCare services, you agree to be bound by these Terms & Conditions.</p>
+        </div>
+        <div class="policy-section">
+          <h2>2. Services Provided</h2>
+          <p>MediCare provides a platform for connecting patients with healthcare providers.</p>
+        </div>
+        <button onclick="hidePolicyPages()" class="btn btn-primary back-btn">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </button>
+      </div>
+    </section>
+
+    <section id="cookie-policy" class="policy-container hidden">
+      <div class="policy-header">
+        <h1 class="policy-title">Cookie Policy</h1>
+        <div class="policy-meta">Last Updated: December 15, 2024</div>
+      </div>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h2>1. What Are Cookies</h2>
+          <p>Cookies are small text files stored on your device when you visit our website.</p>
+        </div>
+        <div class="policy-section">
+          <h2>2. Cookie Management</h2>
+          <p>You can control cookies through your browser settings.</p>
+        </div>
+        <button onclick="hidePolicyPages()" class="btn btn-primary back-btn">
+          <i class="fas fa-arrow-left"></i> Back to Home
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer" id="policies">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <div class="logo" style="margin-bottom: 1.5rem;">
+            <div class="logo-icon">
+              <i class="fas fa-heart-pulse"></i>
+            </div>
+            <span class="logo-text">MediCare</span>
+          </div>
+          <p style="color: var(--text-secondary); line-height: 1.8;">
+            Transforming healthcare through technology, making quality medical care accessible to everyone.
+          </p>
+          <div class="social-links">
+            <a href="https://www.facebook.com" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="https://linkedin.com/vidhyanjha" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com/Flaming_Slayer_7" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Services</h3>
+          <ul class="footer-links">
+            <li><a href="doctors.html">Doctor Appointments</a></li>
+            <li><a href="#features">Virtual Consultations</a></li>
+            <li><a href="login.html">Medical Records</a></li>
+            <li><a href="#">Health Monitoring</a></li>
+            <li><a href="#contact">Emergency Services</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="#hero">About Us</a></li>
+            <li><a href="doctors.html">Our Doctors</a></li>
+            <li><a href="register.html">Careers</a></li>
+            <li><a href="#contact">Press & Media</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>Legal</h3>
+          <ul class="footer-links">
+            <li><a href="#" onclick="event.preventDefault(); showPolicy('privacy-policy')">Privacy Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showPolicy('terms-conditions')">Terms & Conditions</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showPolicy('cookie-policy')">Cookie Policy</a></li>
+            <li><a href="#" onclick="event.preventDefault(); showPolicy('privacy-policy')">HIPAA Compliance</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 MediCare. All rights reserved. | Healthcare made simple, secure, and accessible.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">
+          <i class="fas fa-shield-alt" style="color: var(--primary);"></i>
+          HIPAA Compliant • End-to-End Encrypted • 24/7 Support
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // --- AUTHENTICATION STATE LOGIC (NEW) ---
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Check if user is logged in
+        const token = localStorage.getItem('access_token');
+        const userStr = localStorage.getItem('user');
+        
+        const guestNav = document.getElementById('guest-nav');
+        const userNav = document.getElementById('user-nav');
+        const userNameDisplay = document.getElementById('user-name-display');
+        const heroCtaBtn = document.getElementById('hero-cta-btn');
+        const heroLoginBtn = document.getElementById('hero-login-btn');
+
+        if (token && userStr) {
+            try {
+                const user = JSON.parse(userStr);
+                
+                // Hide Guest Nav / Show User Nav
+                if(guestNav) guestNav.style.display = 'none';
+                if(userNav) userNav.style.display = 'flex';
+                
+                // Set User Name
+                if(userNameDisplay) {
+                    userNameDisplay.textContent = user.first_name || user.username || 'User';
+                }
+
+                // Route Dashboard Link Correctly
+                const dashLink = document.getElementById('dashboard-link');
+                if (dashLink) {
+                    if (user.role === 'doctor') dashLink.href = 'doctor-dashboard.html';
+                    else if (user.role === 'admin') dashLink.href = 'admin-dashboard.html';
+                    else dashLink.href = 'patient-appointments.html';
+                }
+
+                // Update Hero Section Actions
+                if(heroCtaBtn) {
+                    heroCtaBtn.textContent = 'Go to Dashboard';
+                    heroCtaBtn.href = dashLink ? dashLink.href : 'dashboard.html';
+                }
+                
+                // Hide the second "Doctor Login" button in hero if already logged in
+                if(heroLoginBtn) heroLoginBtn.style.display = 'none';
+
+            } catch (e) {
+                console.error("Error parsing user data", e);
+                handleLogout();
+            }
+        } else {
+            // Ensure Guest View is active
+            if(guestNav) guestNav.style.display = 'flex';
+            if(userNav) userNav.style.display = 'none';
+        }
+    });
+
+    function handleLogout() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        window.location.href = 'index.html'; // Reload page to reset state
+    }
+
+    // --- EXISTING THEME & UI LOGIC ---
+
+    // Theme Management
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('theme');
+    
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      if (theme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeToggle.title = 'Switch to light theme';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeToggle.title = 'Switch to dark theme';
+      }
+    }
+    
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (prefersDark.matches) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+    
+    prefersDark.addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('main-header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+      this.innerHTML = navLinks.classList.contains('active') 
+        ? '<i class="fas fa-times"></i>' 
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        const navLinks = document.getElementById('navLinks');
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        navLinks.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        }
+      });
+    });
+
+    // Policy pages functionality
+    function showPolicy(policyId) {
+      document.getElementById('main-content').classList.add('hidden');
+      document.getElementById('policy-pages').classList.remove('hidden');
+      
+      document.querySelectorAll('#policy-pages > section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      
+      document.getElementById(policyId).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function hidePolicyPages() {
+      document.getElementById('main-content').classList.remove('hidden');
+      document.getElementById('policy-pages').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Animate elements on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-fade-in').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

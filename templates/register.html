@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register for MediCare - Doctor Appointment Booking System">
+  <title>Register - MediCare</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+  @import url('/static/css/register.css');
+ </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <a href="index.html" class="back-btn">
+    <i class="fas fa-arrow-left"></i>
+    Back to Home
+  </a>
+
+  <div class="container">
+    <div class="register-card">
+      <div class="card-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-heart-pulse"></i>
+          </div>
+          <span class="logo-text">MediCare</span>
+        </div>
+        <h1 class="welcome-title">Join MediCare</h1>
+        <p class="welcome-subtitle">Create your account in just a few steps</p>
+      </div>
+
+      <div class="card-body">
+        <div class="registration-type">
+          <div class="type-card active" onclick="selectType('patient')">
+            <div class="type-icon">
+              <i class="fas fa-user-injured"></i>
+            </div>
+            <div class="type-name">Patient</div>
+            <div class="type-description">Book appointments, track health records</div>
+          </div>
+          
+          <div class="type-card" onclick="selectType('doctor')">
+            <div class="type-icon">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <div class="type-name">Doctor</div>
+            <div class="type-description">Manage appointments, connect with patients</div>
+          </div>
+        </div>
+
+        <form id="register-form" onsubmit="return handleRegister(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="first-name">First Name</label>
+              <input type="text" id="first-name" class="form-input" placeholder="Vishnu" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="last-name">Last Name</label>
+              <input type="text" id="last-name" class="form-input" placeholder="Nishad" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" class="form-input" placeholder="omkar33@example.com" required>
+            <small class="form-hint">We'll never share your email with anyone else.</small>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-input" placeholder="+91 98765 43210">
+          </div>
+          
+          <div id="doctor-fields" class="hidden">
+            <div class="form-group">
+              <label class="form-label" for="specialization">Specialization</label>
+              <input type="text" id="specialization" class="form-input" placeholder="e.g., Cardiologist">
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="experience">Experience (Years)</label>
+                  <input type="number" id="experience" class="form-input" placeholder="e.g. 5">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="fee">Consultation Fee ($)</label>
+                    <input type="number" id="fee" class="form-input" placeholder="e.g. 100">
+                </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <div class="password-container">
+              <input type="password" id="password" class="form-input" placeholder="Create a strong password" required
+                     oninput="checkPasswordStrength(this.value)">
+              <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-fill" id="strength-fill"></div>
+              </div>
+              <div class="strength-text" id="strength-text">Password strength</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="confirm-password">Confirm Password</label>
+            <div class="password-container">
+              <input type="password" id="confirm-password" class="form-input" placeholder="Re-enter your password" required>
+              <button type="button" class="password-toggle" onclick="togglePassword('confirm-password')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <div id="password-match" class="form-hint"></div>
+          </div>
+          
+          <div class="form-checkbox">
+            <input type="checkbox" id="terms" class="checkbox-input" required>
+            <label for="terms" class="checkbox-label">
+              I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+            </label>
+          </div>
+          
+          <div class="form-checkbox">
+            <input type="checkbox" id="newsletter" class="checkbox-input">
+            <label for="newsletter" class="checkbox-label">
+              Send me health tips, appointment reminders, and updates
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            <span id="submit-text">Create Account</span>
+            <span id="submit-spinner" class="hidden">
+              <i class="fas fa-spinner fa-spin"></i> Creating account...
+            </span>
+          </button>
+        </form>
+
+        <div class="auth-links">
+          Already have an account? <a href="login.html" class="auth-link">Sign in here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // --- 1. THEME MANAGEMENT (Existing Code) ---
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('theme');
+    
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      if (theme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeToggle.title = 'Switch to light theme';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeToggle.title = 'Switch to dark theme';
+      }
+    }
+    
+    if (savedTheme) setTheme(savedTheme);
+    else if (prefersDark.matches) setTheme('dark');
+    else setTheme('light');
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
+
+    // --- 2. REGISTRATION TYPE LOGIC ---
+    let selectedType = 'patient';
+    
+    function selectType(type) {
+      selectedType = type;
+      
+      document.querySelectorAll('.type-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      
+      const doctorFields = document.getElementById('doctor-fields');
+      const expInput = document.getElementById('experience');
+      const feeInput = document.getElementById('fee');
+
+      if (type === 'doctor') {
+        doctorFields.classList.remove('hidden');
+        expInput.required = true;
+        feeInput.required = true;
+      } else {
+        doctorFields.classList.add('hidden');
+        expInput.required = false;
+        feeInput.required = false;
+      }
+    }
+    
+    // --- 3. PASSWORD VISIBILITY ---
+    function togglePassword(fieldId) {
+      const passwordInput = document.getElementById(fieldId);
+      const toggleIcon = passwordInput.parentElement.querySelector('.password-toggle i');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.className = 'fas fa-eye-slash';
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.className = 'fas fa-eye';
+      }
+    }
+    
+    // --- 4. PASSWORD STRENGTH & MATCH ---
+    function checkPasswordStrength(password) {
+      const strengthFill = document.getElementById('strength-fill');
+      const strengthText = document.getElementById('strength-text');
+      let strength = 0;
+      let text = 'Weak';
+      let color = '#EF4444'; 
+      
+      if (password.length >= 8) strength += 25;
+      if (/[A-Z]/.test(password)) strength += 25;
+      if (/[0-9]/.test(password)) strength += 25;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+      
+      if (strength >= 75) { text = 'Strong'; color = '#10B981'; } 
+      else if (strength >= 50) { text = 'Good'; color = '#F59E0B'; } 
+      else if (strength >= 25) { text = 'Fair'; color = '#F59E0B'; }
+      
+      strengthFill.style.width = `${strength}%`;
+      strengthFill.style.backgroundColor = color;
+      strengthText.textContent = `Password strength: ${text}`;
+      strengthText.style.color = color;
+      
+      checkPasswordMatch(password, document.getElementById('confirm-password').value);
+    }
+    
+    function checkPasswordMatch(password, confirmPassword) {
+      const matchHint = document.getElementById('password-match');
+      if (!confirmPassword) { matchHint.textContent = ''; return; }
+      
+      if (password === confirmPassword) {
+        matchHint.textContent = '✓ Passwords match';
+        matchHint.style.color = '#10B981';
+      } else {
+        matchHint.textContent = '✗ Passwords do not match';
+        matchHint.style.color = '#EF4444';
+      }
+    }
+    
+    document.getElementById('confirm-password').addEventListener('input', function() {
+      checkPasswordMatch(document.getElementById('password').value, this.value);
+    });
+    
+    // --- 5. TOAST NOTIFICATION ---
+    function showToast(title, message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <div class="toast-header">
+          <div class="toast-title">${title}</div>
+          <button class="toast-close" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="toast-message">${message}</div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    }
+    
+    // --- 6. REAL BACKEND REGISTRATION LOGIC ---
+    const API_URL = 'http://127.0.0.1:8000/api/users/';
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submit-btn');
+      const submitText = document.getElementById('submit-text');
+      const submitSpinner = document.getElementById('submit-spinner');
+      
+      // UI Loading State
+      submitBtn.classList.add('btn-loading');
+      submitText.classList.add('hidden');
+      submitSpinner.classList.remove('hidden');
+      submitBtn.disabled = true;
+
+      // 1. Gather Data
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (password !== confirmPassword) {
+        showToast('Error', 'Passwords do not match.', 'error');
+        resetBtn();
+        return false;
+      }
+
+      // Prepare payload for Django
+      const userData = {
+        username: document.getElementById('email').value, // Use email as username
+        email: document.getElementById('email').value,
+        first_name: document.getElementById('first-name').value,
+        last_name: document.getElementById('last-name').value,
+        password: password,
+        role: selectedType
+      };
+
+      // Add doctor specific fields
+      if (selectedType === 'doctor') {
+        userData.specialization = document.getElementById('specialization').value;
+        userData.experience = parseInt(document.getElementById('experience').value);
+        userData.consultation_fee = parseFloat(document.getElementById('fee').value);
+        userData.is_verified = false; // Default to unverified
+      }
+
+      try {
+        // 2. Send to Backend
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Success!
+            showToast('Success', 'Account created! Redirecting to login...', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        } else {
+            // Handle specific Django errors
+            let msg = 'Registration failed.';
+            if (data.username) msg = 'User with this email already exists.';
+            else if (data.email) msg = 'Email address already in use.';
+            else if (data.password) msg = 'Password is too weak or common.';
+            showToast('Registration Failed', msg, 'error');
+            resetBtn();
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+        showToast('Network Error', 'Could not connect to server. Ensure backend is running.', 'error');
+        resetBtn();
+      }
+      
+      return false; // Prevent form default submit
+
+      function resetBtn() {
+        submitBtn.classList.remove('btn-loading');
+        submitText.classList.remove('hidden');
+        submitSpinner.classList.add('hidden');
+        submitBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

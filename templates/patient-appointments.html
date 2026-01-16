@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - MediCare</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- 1. ENHANCED THEME VARIABLES --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338ca;
+            --secondary: #EC4899;
+            --background: #f3f4f6;
+            --surface: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            /* Enhanced Status Colors */
+            --status-pending-bg: #FEF3C7;
+            --status-pending-text: #D97706;
+            --status-pending-border: #F59E0B;
+            
+            --status-confirmed-bg: #D1FAE5;
+            --status-confirmed-text: #059669;
+            --status-confirmed-border: #10B981;
+            
+            --status-cancelled-bg: #FEE2E2;
+            --status-cancelled-text: #DC2626;
+            --status-cancelled-border: #EF4444;
+            
+            --status-completed-bg: #E0E7FF;
+            --status-completed-text: #3730A3;
+            --status-completed-border: #4F46E5;
+            
+            /* Card Color Themes */
+            --card-date-color: #8B5CF6;
+            --card-time-color: #F59E0B;
+            --card-fee-color: #059669;
+        }
+
+        [data-theme="dark"] {
+            --background: #111827;
+            --surface: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --border: #374151;
+            
+            /* Dark Mode Status Adjustments */
+            --status-pending-bg: rgba(245, 158, 11, 0.2);
+            --status-pending-text: #FBBF24;
+            --status-pending-border: #F59E0B;
+            
+            --status-confirmed-bg: rgba(16, 185, 129, 0.2);
+            --status-confirmed-text: #34D399;
+            --status-confirmed-border: #10B981;
+            
+            --status-cancelled-bg: rgba(239, 68, 68, 0.2);
+            --status-cancelled-text: #F87171;
+            --status-cancelled-border: #EF4444;
+            
+            --status-completed-bg: rgba(79, 70, 229, 0.2);
+            --status-completed-text: #818CF8;
+            --status-completed-border: #4F46E5;
+            
+            --card-date-color: #A78BFA;
+            --card-time-color: #FBBF24;
+            --card-fee-color: #34D399;
+        }
+
+        /* --- 2. GLOBAL STYLES --- */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
+        
+        body { 
+            background-color: var(--background); 
+            color: var(--text-primary); 
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+        
+        /* --- 3. ENHANCED HEADER --- */
+        .header { 
+            background: var(--surface); 
+            padding: 1rem 0; 
+            box-shadow: var(--shadow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-inner { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        /* Enhanced Logo */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            text-decoration: none; 
+            font-size: 1.5rem; 
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover { 
+            transform: scale(1.05); 
+        }
+        
+        .logo i { 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+        }
+        
+        .header-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        
+        /* Enhanced Buttons */
+        .btn { 
+            padding: 0.6rem 1.5rem; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 500; 
+            cursor: pointer; 
+            border: none; 
+            transition: all 0.2s; 
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-outline { 
+            border: 2px solid var(--primary); 
+            color: var(--primary); 
+            background: transparent; 
+        }
+        
+        .btn-outline:hover { 
+            background: var(--primary); 
+            color: white; 
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
+            color: white; 
+            border: none;
+        }
+        
+        .btn-primary:hover { 
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        /* Enhanced Theme Toggle */
+        .theme-toggle { 
+            background: var(--surface); 
+            border: 1px solid var(--border);
+            color: var(--text-primary); 
+            font-size: 1.2rem; 
+            cursor: pointer; 
+            padding: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .theme-toggle:hover { 
+            background: var(--primary); 
+            color: white;
+            transform: rotate(15deg);
+        }
+
+        /* --- 4. DASHBOARD HEADER --- */
+        .dashboard-header {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: end;
+            margin: 40px 0 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dashboard-title h1 { 
+            font-size: 2.2rem; 
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .dashboard-title p { 
+            color: var(--text-secondary); 
+            font-size: 1.1rem;
+        }
+        
+        .user-welcome {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* --- 5. STATS CARDS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-info h3 {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .stat-info strong {
+            font-size: 1.8rem;
+            color: var(--text-primary);
+        }
+
+        /* --- 6. APPOINTMENTS GRID --- */
+        .appointments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            padding-bottom: 50px;
+        }
+
+        /* Enhanced Appointment Card */
+        .app-card {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(to bottom, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 6px 0 0 6px;
+        }
+        
+        .app-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+        
+        /* Doctor Info Section */
+        .doctor-info { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        
+        .doctor-avatar {
+            width: 60px; 
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: 700; 
+            font-size: 1.4rem;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        
+        .doctor-text h3 { 
+            font-size: 1.2rem; 
+            margin-bottom: 4px; 
+            color: var(--text-primary);
+        }
+        
+        .doctor-text span { 
+            font-size: 0.9rem; 
+            color: var(--secondary); 
+            font-weight: 500;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(79, 70, 229, 0.1) 100%);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Enhanced App Details */
+        .app-details {
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .detail-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: var(--text-primary); 
+            font-size: 0.95rem;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .detail-row:hover {
+            background: rgba(79, 70, 229, 0.05);
+        }
+        
+        .detail-row i { 
+            width: 24px; 
+            text-align: center; 
+            font-size: 1.1rem;
+        }
+        
+        /* Color-coded icons */
+        .detail-row:nth-child(1) i { color: var(--card-date-color); }
+        .detail-row:nth-child(2) i { color: var(--card-time-color); }
+        .detail-row:nth-child(3) i { color: var(--card-fee-color); }
+
+        .app-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        /* Enhanced Status Badges */
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: capitalize;
+            transition: all 0.2s;
+        }
+        
+        /* Status Colors - KEEPING YOUR ORIGINAL LOGIC */
+        .status-pending {
+            background: var(--status-pending-bg);
+            color: var(--status-pending-text);
+            border: 1px solid var(--status-pending-border);
+        }
+        
+        .status-confirmed {
+            background: var(--status-confirmed-bg);
+            color: var(--status-confirmed-text);
+            border: 1px solid var(--status-confirmed-border);
+        }
+        
+        .status-cancelled {
+            background: var(--status-cancelled-bg);
+            color: var(--status-cancelled-text);
+            border: 1px solid var(--status-cancelled-border);
+        }
+        
+        .status-completed {
+            background: var(--status-completed-bg);
+            color: var(--status-completed-text);
+            border: 1px solid var(--status-completed-border);
+        }
+
+        /* --- 7. ENHANCED MODAL --- */
+        .modal-overlay {
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; 
+            align-items: center; 
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-content {
+            background: var(--surface);
+            color: var(--text-primary);
+            padding: 2rem;
+            border-radius: 16px;
+            width: 90%; 
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        @keyframes slideUp { 
+            from { transform: translateY(30px) scale(0.95); opacity: 0; } 
+            to { transform: translateY(0) scale(1); opacity: 1; } 
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            transition: all 0.2s;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            color: var(--status-cancelled-text);
+            background: var(--status-cancelled-bg);
+            transform: rotate(90deg);
+        }
+        
+        .modal-row {
+            display: flex; 
+            justify-content: space-between; 
+            padding: 15px 0; 
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        
+        .modal-row:last-child {
+            border-bottom: none;
+        }
+        
+        .modal-row strong { 
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .modal-row span { 
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* Modal Status Badge */
+        .modal-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: capitalize;
+        }
+
+        /* --- 8. EMPTY STATE --- */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            grid-column: 1 / -1;
+            background: var(--surface);
+            border-radius: 20px;
+            border: 2px dashed var(--border);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.7;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 25px;
+            font-size: 1.1rem;
+        }
+
+        /* --- 9. RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .appointments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .dashboard-title h1 {
+                font-size: 1.8rem;
+            }
+            
+            .doctor-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-heart-pulse"></i> MediCare
+                </a>
+                
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button onclick="handleLogout()" class="btn btn-outline" style="border-color: var(--status-cancelled-border); color: var(--status-cancelled-text);">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <h1>My Appointments</h1>
+                <p>Welcome back, <span class="user-welcome" id="user-name">Patient</span></p>
+            </div>
+            <div style="display:flex; gap:12px;">
+                <a href="patient-profile.html" class="btn btn-outline">
+                    <i class="fas fa-user-circle"></i> My Profile
+                </a>
+                <a href="doctors.html" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> New Appointment
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" id="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--status-pending-bg); color: var(--status-pending-text);">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Pending</h3>
+                    <strong id="pending-count">0</strong>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--status-confirmed-bg); color: var(--status-confirmed-text);">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Confirmed</h3>
+                    <strong id="confirmed-count">0</strong>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--status-completed-bg); color: var(--status-completed-text);">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total</h3>
+                    <strong id="total-count">0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments Grid -->
+        <div id="appointments-grid" class="appointments-grid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--primary)"></i>
+                <p style="margin-top: 15px; color: var(--text-secondary);">Loading your schedule...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Details Modal -->
+    <div id="details-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h2 style="font-size:1.5rem; margin-bottom:1.5rem; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                <i class="fas fa-file-medical-alt"></i> Appointment Details
+            </h2>
+            
+            <div id="modal-body"></div>
+            
+            <button onclick="closeModal()" class="btn btn-primary btn-block" style="margin-top:1.5rem;">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/api/appointments/';
+        const gridContainer = document.getElementById('appointments-grid');
+        let allAppointments = [];
+
+        // --- 1. THEME LOGIC ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+
+        // --- 2. USER INFO ---
+        const userStr = localStorage.getItem('user');
+        if(userStr) {
+            const user = JSON.parse(userStr);
+            document.getElementById('user-name').textContent = user.first_name || user.username;
+        } else {
+            window.location.href = 'login.html';
+        }
+
+        // --- 3. FETCH APPOINTMENTS ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('access_token');
+            if (!token) window.location.href = 'login.html';
+
+            try {
+                const res = await fetch(API_URL, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!res.ok) throw new Error("Failed to fetch");
+                
+                allAppointments = await res.json(); // Save to global variable
+                updateStats(allAppointments);
+                renderAppointments(allAppointments);
+
+            } catch (err) {
+                console.error(err);
+                gridContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Unable to Load Appointments</h3>
+                        <p>Please check your internet connection and try again.</p>
+                        <button class="btn btn-primary" onclick="location.reload()" style="margin-top: 20px;">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>`;
+            }
+        });
+
+        // --- 4. UPDATE STATS ---
+        function updateStats(apps) {
+            const pending = apps.filter(a => a.status === 'pending').length;
+            const confirmed = apps.filter(a => a.status === 'confirmed').length;
+            const total = apps.length;
+            
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('confirmed-count').textContent = confirmed;
+            document.getElementById('total-count').textContent = total;
+        }
+
+        // --- 5. RENDER APPOINTMENTS (YOUR ORIGINAL LOGIC PRESERVED) ---
+        function renderAppointments(apps) {
+            gridContainer.innerHTML = '';
+            
+            if (apps.length === 0) {
+                gridContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No Appointments Yet</h3>
+                        <p>Start your healthcare journey by booking your first appointment with a specialist.</p>
+                        <a href="doctors.html" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Find a Doctor
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            apps.forEach(app => {
+                const dateObj = new Date(app.date);
+                const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+                
+                const docFirst = app.doctor_details?.first_name || 'Unknown';
+                const docLast = app.doctor_details?.last_name || 'Doctor';
+                const docSpec = app.doctor_details?.specialization || 'Specialist';
+                
+                // YOUR ORIGINAL STATUS LOGIC PRESERVED
+                let statusColor = 'var(--status-pending-text)';
+                let statusBg = 'var(--status-pending-bg)';
+                let statusIcon = 'fa-clock';
+                let statusClass = 'status-pending';
+
+                if(app.status === 'confirmed') {
+                    statusColor = 'var(--status-confirmed-text)';
+                    statusBg = 'var(--status-confirmed-bg)';
+                    statusIcon = 'fa-check-circle';
+                    statusClass = 'status-confirmed';
+                } else if(app.status === 'cancelled') {
+                    statusColor = 'var(--status-cancelled-text)';
+                    statusBg = 'var(--status-cancelled-bg)';
+                    statusIcon = 'fa-times-circle';
+                    statusClass = 'status-cancelled';
+                }
+
+                const card = `
+                    <div class="app-card">
+                        <div class="doctor-info">
+                            <div class="doctor-avatar">${docFirst[0]}${docLast[0]}</div>
+                            <div class="doctor-text">
+                                <h3>Dr. ${docFirst} ${docLast}</h3>
+                                <span>${docSpec}</span>
+                            </div>
+                        </div>
+
+                        <div class="app-details">
+                            <div class="detail-row"><i class="far fa-calendar-alt"></i> <span>${dateStr}</span></div>
+                            <div class="detail-row"><i class="far fa-clock"></i> <span>${app.time}</span></div>
+                            <div class="detail-row"><i class="fas fa-dollar-sign"></i> <span>$${app.consultation_fee} Fee</span></div>
+                        </div>
+
+                        <div class="app-footer">
+                            <div class="status-badge ${statusClass}" style="background:${statusBg}; color:${statusColor}; border-color:${statusColor}">
+                                <i class="fas ${statusIcon}"></i> ${app.status}
+                            </div>
+                            <button onclick="openDetails(${app.id})" class="btn btn-outline" style="padding: 0.6rem 1.2rem;">
+                                <i class="fas fa-eye"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gridContainer.innerHTML += card;
+            });
+        }
+
+        // --- 6. DETAILS MODAL LOGIC (YOUR ORIGINAL LOGIC PRESERVED) ---
+        const modal = document.getElementById('details-modal');
+        const modalBody = document.getElementById('modal-body');
+
+        function openDetails(id) {
+            // Find the correct appointment from the global list
+            const app = allAppointments.find(a => a.id === id);
+            
+            if(!app) return;
+
+            const dateObj = new Date(app.date);
+            const dateStr = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            // Determine status class for modal
+            let statusClass = 'status-pending';
+            let statusColor = 'var(--status-pending-text)';
+            if(app.status === 'confirmed') {
+                statusClass = 'status-confirmed';
+                statusColor = 'var(--status-confirmed-text)';
+            } else if(app.status === 'cancelled') {
+                statusClass = 'status-cancelled';
+                statusColor = 'var(--status-cancelled-text)';
+            }
+
+            modalBody.innerHTML = `
+                <div class="modal-row">
+                    <span><i class="fas fa-info-circle"></i> Status</span>
+                    <div class="modal-status ${statusClass}" style="background:${statusClass === 'status-pending' ? 'var(--status-pending-bg)' : statusClass === 'status-confirmed' ? 'var(--status-confirmed-bg)' : 'var(--status-cancelled-bg)'}; color:${statusColor}; border-color:${statusColor}">
+                        <i class="fas fa-circle" style="font-size: 0.6rem;"></i> ${app.status}
+                    </div>
+                </div>
+                <div class="modal-row">
+                    <span><i class="fas fa-user-md"></i> Doctor</span>
+                    <strong>Dr. ${app.doctor_details?.first_name} ${app.doctor_details?.last_name}</strong>
+                </div>
+                <div class="modal-row">
+                    <span><i class="fas fa-stethoscope"></i> Specialization</span>
+                    <strong>${app.doctor_details?.specialization}</strong>
+                </div>
+                <div class="modal-row">
+                    <span><i class="fas fa-calendar-day"></i> Date</span>
+                    <strong>${dateStr}</strong>
+                </div>
+                <div class="modal-row">
+                    <span><i class="fas fa-clock"></i> Time</span>
+                    <strong>${app.time}</strong>
+                </div>
+                <div class="modal-row">
+                    <span><i class="fas fa-money-bill-wave"></i> Consultation Fee</span>
+                    <strong style="color: var(--card-fee-color);">$${app.consultation_fee}</strong>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <span style="color: var(--text-secondary); font-size: 0.9rem; display: block; margin-bottom: 8px;">
+                        <i class="fas fa-notes-medical"></i> Notes & Symptoms:
+                    </span>
+                    <div style="background: var(--background); padding: 15px; border-radius: 8px; border: 1px solid var(--border); line-height: 1.5;">
+                        ${app.notes || '<em style="color: var(--text-secondary);">No notes provided.</em>'}
+                    </div>
+                </div>
+            `;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close modal on outside click
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

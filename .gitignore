@@ -1,0 +1,16 @@
+# Ignore Virtual Environment
+venv/
+env/
+
+# Ignore Python Cache
+__pycache__/
+*.py[cod]
+
+# Ignore Database (Optional: Keep this if you want to share data, remove if you want a clean repo)
+db.sqlite3
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore Media files (User uploads)
+media/
